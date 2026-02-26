@@ -90,17 +90,19 @@ public class CrazyMazeScript : MonoBehaviour
                     CurCellText.text = "NICE";
                     GoalCellText.gameObject.SetActive(false);
                 }
+                return false;
             }
-            else if (goingTo != null)
-            {
+
+            if (goingTo != null)
                 Debug.LogFormat(@"[Crazy Maze #{0}] Attempt to {3} from {1} to {2}. Strike.", _moduleID, _cellLetters[_currentCell], _cellLetters[goingTo.Value], lower);
-                Module.HandleStrike();
-            }
-            else
-            {
+            else if (isBridge)
                 Debug.LogFormat(@"[Crazy Maze #{0}] Attempt to cross a non-existent bridge from {1}. Strike.", _moduleID, _cellLetters[_currentCell]);
-                Module.HandleStrike();
-            }
+            else
+                Debug.LogFormat(@"[Crazy Maze #{0}] Attempt to move from {1} into the edge of the maze. Strike.", _moduleID, _cellLetters[_currentCell]);
+
+            Module.HandleStrike();
+            _showingGoal = false;
+            SetCell(_startingCell);
 
             return false;
         };
@@ -189,7 +191,7 @@ public class CrazyMazeScript : MonoBehaviour
         var cellInfo = CellTransitions.All[cell];
         var transitions = cellInfo.Neighbors;
 
-        for (int arIx = 0; arIx < Arrows.Length; arIx++)
+        for (var arIx = 0; arIx < Arrows.Length; arIx++)
         {
             if (arIx >= transitions.Length)
                 Arrows[arIx].gameObject.SetActive(false);

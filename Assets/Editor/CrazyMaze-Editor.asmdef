@@ -1,0 +1,10 @@
+{
+  "name": "CrazyMaze-Editor",
+  "references": [
+    "CrazyMaze"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": []
+}
